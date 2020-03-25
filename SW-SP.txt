@@ -1,0 +1,41 @@
+enable
+configure terminal
+hostname SW-SP
+enable secret batata*enable
+banner motd "ATENCAO! APENAS O DEPARTAMENTO DE TI TEM A AUTORIZACAO PARA ACESSAR ESSE EQUIPAMENTO!"
+no ip domain-lookup
+line console 0
+password batata*console
+login
+exit
+ip domain-name batata.local
+crypto key generate rsa general-key modulus 1024
+line vty 0 15
+transport input ssh
+password batata*VTY
+login
+exit
+interface fastethernet 0/1
+description CONECTADA AO PC-SP
+exit
+interface fastethernet 0/2
+description CONECTADA AO SRV-SP
+exit
+interface vlan 1
+description INTERFACE DE GERENCIAMENTO
+ip address 172.16.11.254 255.255.252.0
+no shutdown
+exit
+service password-encryption 
+ip default-gateway 172.16.8.1
+username userbatata privilege 15 secret batata*00
+line vty 0 15 
+login local
+exit
+line console 0
+login local
+exit
+do wr
+
+
+
